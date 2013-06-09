@@ -7,5 +7,5 @@
 *.pot
 *.pyc
 
-# Resultado de collectstatic
-/static/
+# Settings file
+laboratorio/settings.py
