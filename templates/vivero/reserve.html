@@ -1,0 +1,59 @@
+{% extends "vivero/index.html" %}
+{% block title %}Vivero | Reservar ratón{% endblock title %}
+{% block styles %}<link type="text/css" href="/static/css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />{% endblock styles %}
+{% block submenu %}<ul>
+<li><a href="/admin/vivero/">Agregar o modificar contenido</a></li>
+<li><a href="/vivero/">Resumen</a></li>
+<li><a href="/vivero/reservas">Reservas</a></li>
+<li><a href="/vivero/bitacora">Bitácora</a></li>
+<li><a href="/vivero/histograma">Histograma</a></li>
+</ul>{% endblock submenu %}
+{% block view %}<h3>Reservar ratón: {{ raton }}</h3>
+<p>Ver <a href="/vivero/ratones/{{ raton.pk }}/" title="Volver a detalles de ratón">detalles</a>.</p>
+<form action="/vivero/ratones/{{ raton.pk }}/reservar/{% if prev %}?prev={{ prev }}{% endif %}" method="POST">
+{% csrf_token %}
+<table border="0" cellpadding="3">
+<tbody>
+    <tr><td><label for="tipo">Tipo:</label></td><td><select id="tipo" name="tipo"><option value="T" selected="selected">Temporal</option><option value="F">Terminal</option></select></td></tr>
+    <tr><td><label for="fecha">Fecha de reserva:</label></td><td style="width: 250px"><input id="fecha" type="text" name="fecha" /></td><td>Edad del ratón en la reserva: <span id="edad"></span></td></tr>
+    <tr id="cond"><td><label for="fechat">Término de la reserva:</label></td><td style="width: 250px"><input id="fechat" type="text" name="fechat" /></td></tr>
+    <tr><td><label for="observaciones">Observaciones:</label></td><td><textarea id="observaciones" name="observaciones"></textarea></td></tr>
+    {% if error_message %}<tr><td></td><td style="color: red;">{{ error_message }}</td></tr>{% endif %}
+    <tr><td></td><td><button type="submit">Reservar</button></td></tr>
+</tbody>
+</table>
+</form>
+<script type="text/javascript" src="/static/js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.ui.datepicker-es.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$('#fecha').datepicker({'dateFormat': 'dd/mm/yy'});
+$('#fecha').datepicker("option", $.datepicker.regional['es']);
+$('#fechat').datepicker({'dateFormat': 'dd/mm/yy'});
+$('#fechat').datepicker("option", $.datepicker.regional['es']);
+
+$('#tipo').change(function() {
+    if ($('#tipo').val() == "F")
+        $('#cond').css("display", "none");
+    else
+        $('#cond').css("display", "table-row");
+});
+
+$('#fecha').change(function() {
+    var nac = new Date();
+    nac.setFullYear({{ raton.nacimiento.year }}, {{ raton.nacimiento.month }} - 1, {{ raton.nacimiento.day }})
+    var sel = $('#fecha').datepicker("getDate")
+    if (sel) {
+        var dif = Math.floor((sel.getTime() - nac.getTime())/1000/60/60/24);
+        if (dif <= 30) $('#edad').text(dif + " días.");
+        else {
+            var mes = Math.floor(dif/30);
+            var resto = dif%30;
+            $('#edad').text(mes + " meses " + resto + " días.");
+        }
+    }
+});
+//]]>
+</script>
+{% endblock view %}

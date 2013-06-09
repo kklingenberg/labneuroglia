@@ -1,0 +1,40 @@
+{% extends "vivero/index.html" %}
+{% block title %}Vivero | Bitácora{% endblock %}
+{% block submenu %}<ul>
+<li><a href="/admin/vivero/">Agregar o modificar contenido</a></li>
+<li><a href="/vivero/">Resumen</a></li>
+<li><a href="/vivero/reservas">Reservas</a></li>
+<li>Bitácora</li>
+<li><a href="/vivero/histograma">Histograma</a></li>
+</ul>{% endblock submenu %}
+{% block view %}<h3>Bitára de ratones sacrificados</h3>
+{% if ratones %}<p>{{ total }} ratones.</p>
+<table border="0px" rules="rows" cellpadding="3px">
+<thead>
+    <tr>
+        <th></th>
+        <th style="width: 120px;">Línea</th>
+        <th style="width: 90px;">Camada</th>
+        <th style="width: 80px;">Número</th>
+        <th style="width: 150px;">F. de nac.</th>
+        <th style="width: 140px;">Genotipo</th>
+        <th style="width: 140px;">Regenotipo</th>
+        <th style="width: 120px;">Colonia</th>
+    </tr>
+</thead>
+<tbody>{% for raton in ratones %}
+    <tr>
+        <td><a href="{{ raton.get_absolute_url }}" title="Ver detalles"><img src="/static/images/detail.png" alt="ver" /></a></td>
+        <td>{{ raton.linea }}</td>
+        <td>{{ raton.camada }}</td>
+        <td>{{ raton.numero }}</td>
+        <td>{{ raton.nacimiento }}</td>
+        <td>{{ raton.genotipo }}</td>
+        <td>{{ raton.regenotipo }}</td>
+        <td>{{ raton.colonia }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+{% else %}<p>No hay registros en la bitácora.</p>{% endif %}
+{% endblock view %}

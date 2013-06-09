@@ -1,0 +1,81 @@
+{% extends "vivero/index.html" %}
+{% block title %}Vivero | Histograma de muertes{% endblock %}
+{% block styles %}<link type="text/css" href="/static/css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />{% endblock styles %}
+{% block scripts %}<!--[if lte IE 8]><script type="text/javascript" src="/static/js/excanvas.min.js"></script><![endif]-->
+    <script type="text/javascript" src="/static/js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.flot.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.flot.stack.js"></script>{% endblock scripts %}
+{% block submenu %}<ul>
+<li><a href="/admin/vivero/">Agregar o modificar contenido</a></li>
+<li><a href="/vivero/">Resumen</a></li>
+<li><a href="/vivero/reservas">Reservas</a></li>
+<li><a href="/vivero/bitacora">Bitácora</a></li>
+<li>Histograma</li>
+</ul>{% endblock submenu %}
+{% block view %}<h3>Histograma de muertes</h3>
+{% if total > 0 %}<p>{{ total }} ratones.</p>
+<form method="get" action="/vivero/histograma">
+<p>Filtrar por fecha de nacimiento: <label for="desde">desde</label><input id="desde" name="desde" type="text" /> <label for="hasta">hasta</label> <input id="hasta" name="hasta" type="text" /><button type="submit">Filtrar</button></p>
+</form>
+<h4>Tiempo de vida por genotipo</h4>
+<table border="0">
+<tbody>
+<tr><td>frec.</td><td><div id="chart-genotipo" style="width:600px; height:400px;"></div></td></tr>
+<tr><td></td><td style="text-align: right;">tiempo (días)</td></tr>
+</tbody>
+</table>
+
+<h4>Tiempo de vida por línea genética</h4>
+<table border="0">
+<tbody>
+<tr><td>frec.</td><td><div id="chart-linea" style="width:600px; height:400px;"></div></td></tr>
+<tr><td></td><td style="text-align: right;">tiempo (días)</td></tr>
+</tbody>
+</table>
+
+<h4>Tiempo de vida por género</h4>
+<table border="0">
+<tbody>
+<tr><td>frec.</td><td><div id="chart-sexo" style="width:600px; height:400px;"></div></td></tr>
+<tr><td></td><td style="text-align: right;">tiempo (días)</td></tr>
+</tbody>
+</table>
+
+<script type="text/javascript" src="/static/js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.ui.datepicker-es.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$('#desde').datepicker({'dateFormat': 'dd/mm/yy', 'changeMonth': true, 'changeYear': true});
+$('#desde').datepicker("option", $.datepicker.regional['es']);
+$('#hasta').datepicker({'dateFormat': 'dd/mm/yy', 'changeMonth': true, 'changeYear': true});
+$('#hasta').datepicker("option", $.datepicker.regional['es']);
+{% if desde %}$('#desde').datepicker("setDate", "{{ desde }}");{% endif %}
+$('#hasta').datepicker("setDate", "{{ hasta }}");
+
+var series_genotipo = [0{% for serie in series_genotipo %}, {label: '{{ serie.label }}', data: {{ serie.data }}}{% endfor %}];
+series_genotipo.shift();
+var series_sexo = [0{% for serie in series_sexo %}, {label: '{{ serie.label }}', data: {{ serie.data }}}{% endfor %}];
+series_sexo.shift();
+var series_linea = [0{% for serie in series_linea %}, {label: '{{ serie.label }}', data: {{ serie.data }}}{% endfor %}];
+series_linea.shift();
+
+var amplitude = {{ amplitud }}*0.6;
+
+function draw(placeholder, dataset) {
+    $.plot($(placeholder), dataset, {
+        series: {
+            stack: 0,
+            lines: {show: false, fill: true, steps: false},
+            bars: {show: true, fill: 0.8, barWidth: amplitude}
+        }
+    });
+}
+
+draw("#chart-genotipo", series_genotipo);
+draw("#chart-linea", series_linea);
+draw("#chart-sexo", series_sexo);
+
+//]]>
+</script>
+{% else %}<p>No hay muertes registradas.</p>{% endif %}
+{% endblock view %}

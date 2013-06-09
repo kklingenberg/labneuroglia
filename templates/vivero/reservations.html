@@ -1,0 +1,188 @@
+{% extends "vivero/index.html" %}
+{% block title %}Vivero | Reservas{% endblock title %}
+{% block styles %}<style type="text/css">
+    .calendar {
+        float: left;
+        padding-right: 30px;
+    }
+
+    .calendar th {
+        text-align: center;
+    }
+
+    .calendar td {
+        font-family: sans-serif;
+        font-size: 80%;
+        text-align: right;
+        width: 40px;
+        height: 30px;
+    }
+
+    .day {
+        background-color: lightblue;
+    }
+
+    .today {
+        background-color: orange;
+    }
+
+    .reserved {
+        font-weight: bold;
+        background-color: #73C2FB;
+        cursor: pointer;
+    }
+    </style>{% endblock styles %}
+{% block submenu %}<ul>
+<li><a href="/admin/vivero/">Agregar o modificar contenido</a></li>
+<li><a href="/vivero/">Resumen</a></li>
+<li>Reservas</li>
+<li><a href="/vivero/bitacora">Bitácora</a></li>
+<li><a href="/vivero/histograma">Histograma</a></li>
+</ul>{% endblock submenu %}
+{% block view %}<h3>Reservas</h3>
+<div>
+<table border="0" cellpadding="3" class="calendar">
+<thead>
+    <tr>
+        <th><a href="javascript:previous()" title="Mes anterior">&lt;&lt;</a></th>
+        <th colspan="6" id="month1"></th>
+    </tr>
+    <tr>
+        <th>Lu</th>
+        <th>Ma</th>
+        <th>Mi</th>
+        <th>Ju</th>
+        <th>Vi</th>
+        <th>Sa</th>
+        <th>Do</th>
+    </tr>
+</thead>
+<tbody id="cal1">
+<tr><td></td></tr>
+</tbody>
+</table>
+<table border="0" cellpadding="3" class="calendar">
+<thead>
+    <tr>
+        <th colspan="6" id="month2"></th>
+        <th><a href="javascript:next()" title="Mes siguiente">&gt;&gt;</a></th>
+    </tr>
+    <tr>
+        <th>Lu</th>
+        <th>Ma</th>
+        <th>Mi</th>
+        <th>Ju</th>
+        <th>Vi</th>
+        <th>Sa</th>
+        <th>Do</th>
+    </tr>
+</thead>
+<tbody id="cal2">
+<tr><td></td></tr>
+</tbody>
+</table>
+</div>
+<div style="clear: both; padding-top: 10px;">
+{% for dia in reservas %}
+<h4 id="h{{ dia.0.isoformat }}">{{ dia.0 }}</h4>
+<ul id="res{{ dia.0.isoformat }}">
+{% for reserva in dia.1 %}
+<li>Ratón <a href="/vivero/ratones/{{ reserva.raton.pk }}/">{{ reserva.raton }}</a>. Reservado por {{ reserva.usuario }}. Modificado por última vez el {{ reserva.creada }}.</li>
+{% endfor %}
+</ul>
+{% endfor %}
+</div>
+<script type="text/javascript">
+//<![CDATA[
+function toISODate(d) {
+    var year = d.getFullYear();
+    var month = d.getMonth() + 1;
+    var day = d.getDate();
+    if (("" + month).length < 2) month = "0" + month;
+    if (("" + day).length < 2) day = "0" + day;
+    return year + "-" + month + "-" + day;
+}
+
+function addWeek(table, init, month) {
+    // add blanks for every day not in this month
+    var tr = document.createElement("tr");
+    var first = (init.getDay() + 6) % 7;
+    for (i = 0; i < first; i++) {
+        var td = document.createElement("td");
+        tr.appendChild(td);
+    }
+    for (i = first; i < 7; i++) {
+        var td = document.createElement("td");
+        if (init.getMonth() == month) {
+            td.appendChild(document.createTextNode(init.getDate()));
+            var id = toISODate(init);
+            td.id = "cel" + id;
+            if (init.toDateString() == today.toDateString()) {
+                td.setAttribute("class", "today");
+                td.title = "Hoy";
+            } else
+                td.setAttribute("class", "day");
+            loadreservations(td, id);
+        }
+        tr.appendChild(td);
+        init.setDate(init.getDate() + 1);
+    }
+    table.appendChild(tr);
+}
+
+function loadmonth(id, monthid, firstday) {
+    var cal = document.getElementById(id);
+    while (cal.hasChildNodes()) {
+        cal.removeChild(cal.firstChild);
+    }
+
+    var d = new Date(firstday.toString());
+    d.setDate(1);
+    var month = d.getMonth();
+    while (d.getMonth() == month) {
+        addWeek(cal, d, month);
+    }
+    var monthheader = document.getElementById(monthid);
+    while (monthheader.hasChildNodes()) {
+        monthheader.removeChild(monthheader.firstChild);
+    }
+    monthheader.appendChild(document.createTextNode(monthnames[month]));
+}
+
+function previous() {
+    current.setMonth(current.getMonth() - 1);
+    loadmonth("cal2", "month2", current);
+    current.setMonth(current.getMonth() - 1);
+    loadmonth("cal1", "month1", current);
+    current.setMonth(current.getMonth() + 1);
+}
+
+function next() {
+    loadmonth("cal1", "month1", current);
+    current.setMonth(current.getMonth() + 1);
+    loadmonth("cal2", "month2", current);
+}
+
+function loadreservations(td, id) {
+    var reservations = document.getElementById("res" + id);
+    if (reservations) {
+        td.setAttribute("class", "reserved");
+        td.title = reservations.getElementsByTagName("li").length + " reservas";
+        td.onclick = function() {
+            location.href = "#h" + id;
+        };
+    }
+}
+
+var monthnames = ["Enero", "Febrero", "Marzo", "Abril",
+              "Mayo", "Junio", "Julio", "Agosto",
+              "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+var today = new Date();
+
+var current = new Date();
+loadmonth("cal1", "month1", current);
+current.setMonth(current.getMonth() + 1);
+loadmonth("cal2", "month2", current);
+//]]>
+</script>
+{% endblock view %}

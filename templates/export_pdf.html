@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Exportación a documento pdf</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <style type="text/css">
+    th {
+        text-align: left;
+    }
+    tr {
+        border-bottom: 1px solid black;
+    }
+    </style>
+</head>
+<body>
+
+<h1>LabNeuroglia</h1>
+
+<p>{{ dataset|length }} {{ data_descriptor }}.</p>
+
+<table rules="rows" border="0">
+<thead>
+    <tr>{% for h in header %}
+        <th>{{ h }}</th>{% endfor %}
+    </tr>
+</thead>
+<tbody>
+{% for d in dataset %}
+    <tr>{% for field in d %}
+        <td>{{ field }}</td>{% endfor %}
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+
+</body>
+</html>
+

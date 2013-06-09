@@ -1,0 +1,55 @@
+{% extends "general.html" %}
+{% block title %}Vivero{% endblock %}
+{% block menu %}
+    <ul id="nav">
+
+    <li><a href="/pacientes/">Pacientes</a></li>
+    <li class="selected"><a href="/vivero/">Vivero</a></li>
+    <li><a href="/viales/">Líneas</a></li>
+    <li><a href="/">Inicio</a></li>
+
+    </ul>
+{% endblock menu %}
+{% block content %}
+<h2>Vivero de ratones</h2>
+<div id="nav-page">
+{% block submenu %}<ul>
+<li><a href="/admin/vivero/">Agregar o modificar contenido</a></li>
+<li>Resumen</li>
+<li><a href="/vivero/reservas">Reservas</a></li>
+<li><a href="/vivero/bitacora">Bitácora</a></li>
+<li><a href="/vivero/histograma">Histograma</a></li>
+</ul>{% endblock submenu %}
+</div>
+{% block view %}
+{% if ratones %}<p>Hay {{ total }} ratones.</p>
+<table border="0px" rules="rows" cellpadding="3px">
+<thead>
+    <tr>
+        <th></th>
+        <th style="width: 120px;">Línea</th>
+        <th style="width: 120px;">Camada</th>
+        <th style="width: 100px;">Número</th>
+        <th style="width: 120px;">Edad</th>
+        <th style="width: 100px;">¿Reservado?</th>
+        <th style="width: 140px;">Estado</th>
+        <th style="width: 140px;">Colonia</th>
+    </tr>
+</thead>
+<tbody>{% for raton in ratones %}
+    <tr>
+        <td><a href="{{ raton.get_absolute_url }}" title="Ver detalles"><img src="/static/images/detail.png" alt="ver" /></a></td>
+        <td>{{ raton.linea }}</td>
+        <td>{{ raton.camada }}</td>
+        <td>{{ raton.numero }}</td>
+        <td>{{ raton.edad }}</td>
+        <td>{% if raton.reservado %}Si{% else %}No{% endif %}</td>
+        <td>{{ raton.estado_verbose }}</td>
+        <td>{{ raton.colonia }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+{% else %}<p>No hay ratones en el vivero.</p>{% endif %}
+{% endblock view %}
+{% endblock content %}

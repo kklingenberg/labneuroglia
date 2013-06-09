@@ -1,0 +1,47 @@
+{% extends "general.html" %}
+{% block title %}Líneas celulares{% endblock %}
+{% block menu %}
+    <ul id="nav">
+
+    <li><a href="/pacientes/">Pacientes</a></li>
+    <li><a href="/vivero/">Vivero</a></li>
+    <li class="selected"><a href="/viales/">Líneas</a></li>
+    <li><a href="/">Inicio</a></li>
+
+    </ul>
+{% endblock menu %}
+{% block content %}
+<h2>Líneas celulares</h2>
+<div id="nav-page">
+{% block submenu %}<ul>
+<li><a href="/admin/viales/">Agregar o modificar viales</a></li>
+<li>Resumen</li>
+<li><a href="/viales/ultimomes">Viales del último mes</a></li>
+<li><a href="/viales/bitacora">Bitácora</a></li>
+</ul>{% endblock submenu %}
+</div>
+{% block view %}
+{% if viales %}
+<p>Hay {{ total }} viales congelados.</p>
+{% for stock in viales.items %}
+<div style="display: inline; float: left; width: 220px; padding-right: 60px;">
+<h3>{{ stock.0 }}</h3>
+{% if stock.1 %}
+<table border="0" rules="rows">
+<tbody>
+{% for linea in stock.1.items %}
+    <tr><td style="width: 100px">{{ linea.0 }}</td><td>{{ linea.1 }} viales.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{% else %}
+<p>No hay líneas celulares.</p>
+{% endif %}
+</div>
+{% endfor %}
+{% else %}
+<p> No hay información.</p>
+{% endif %}
+{% endblock view %}
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends "vivero/index.html" %}
+{% block title %}Vivero | Revisión de ratón{% endblock title %}
+{% block submenu %}<ul>
+<li><a href="/admin/vivero/">Agregar o modificar contenido</a></li>
+<li><a href="/vivero/">Resumen</a></li>
+<li><a href="/vivero/reservas">Reservas</a></li>
+<li><a href="/vivero/bitacora">Bitácora</a></li>
+<li><a href="/vivero/histograma">Histograma</a></li>
+</ul>{% endblock submenu %}
+{% block view %}<h3>Revisión de ratón: {{ revision.raton }}</h3>
+<p>Ver <a href="{{ revision.raton.get_absolute_url }}">detalles del ratón</a>.</p>
+<table border="0px" cellpadding="3" rules="rows">
+<thead>
+    <tr><th></th><th></th><th>Puntaje</th></tr>
+</thead>
+<tbody>
+    <tr><td><strong>Fecha de revisión:</strong></td><td>{{ revision.fecha }}</td><td></td></tr>
+    <tr><td><strong>Peso:</strong></td><td>{{ revision.peso }} gramos</td><td></td></tr>
+    <tr><td><strong>Aspecto:</strong></td><td>{{ revision.aspecto }}</td><td>{{ revision.aspecto_puntaje }} pts.</td></tr>
+    <tr><td><strong>Comportamiento espontáneo:</strong></td><td>{{ revision.comportamiento }}</td><td>{{ revision.comportamiento_puntaje }} pts.</td></tr>
+    <tr><td><strong>Signos neurológicos:</strong></td><td>{{ revision.signos }}</td><td>{{ revision.signos_puntaje }} pts.</td></tr>
+    <tr><td><strong>Constantes vitales:</strong></td><td>{{ revision.constantes }}</td><td>{{ revision.constantes_puntaje }} pts.</td></tr>
+    <tr><td><strong>Total:</strong></td><td></td><td>{{ revision.puntaje }} pts.</td></tr>
+</tbody>
+</table>
+{% endblock view %}

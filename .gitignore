@@ -1,0 +1,11 @@
+# Basura emacs
+*~
+\#*\#
+
+# Django
+*.log
+*.pot
+*.pyc
+
+# Resultado de collectstatic
+/static/

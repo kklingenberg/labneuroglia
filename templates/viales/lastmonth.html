@@ -1,0 +1,36 @@
+{% extends "viales/index.html" %}
+{% block title %}Líneas celulares | Viales del último mes{% endblock title %}
+{% block submenu %}<ul>
+<li><a href="/admin/viales/">Agregar o modificar viales</a></li>
+<li><a href="/viales/">Resumen</a></li>
+<li>Viales del último mes</li>
+<li><a href="/viales/bitacora">Bitácora</a></li>
+</ul>{% endblock submenu %}
+{% block view %}<h3>Resumen de los últimos 30 días</h3>
+{% if viales %}
+<p>Se han congelado {{viales|length}} viales.</p>
+<table border="0px" rules="rows" cellpadding="3px">
+<thead>
+    <tr>
+        <th style="width: 240px;">Fecha</th>
+        <th style="width: 120px;">Línea</th>
+        <th style="width: 200px;">Stock</th>
+        <th style="width: 120px;">Ubicación</th>
+        <th style="width: 120px;">Estado</th>
+    </tr>
+</thead>
+<tbody>
+{% for v in viales %}
+<tr>
+    <td>{% if v.congelado_hoy %}Hoy{% else %}{{ v.fecha }}{% endif %}</td>
+    <td>{{ v.linea.nombre }}</td>
+    <td>{{ v.stock.nombre }}</td>
+    <td>{{ v.ubicacion }}</td>
+    <td>{% if v.fue_descongelado %}No vigente{% else %}Congelado{% endif %}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% else %}<p>No se han congelado viales en los últimos  30 días.</p>
+{% endif %}
+{% endblock view %}

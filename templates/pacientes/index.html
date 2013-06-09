@@ -1,0 +1,24 @@
+{% extends "general.html" %}
+{% block title %}Base de datos de pacientes{% endblock %}
+{% block menu %}
+    <ul id="nav">
+
+    <li class="selected"><a href="/pacientes/">Pacientes</a></li>
+    <li><a href="/vivero/">Vivero</a></li>
+    <li><a href="/viales/">Líneas</a></li>
+    <li><a href="/">Inicio</a></li>
+
+    </ul>
+{% endblock menu %}
+{% block content %}
+<h2>Base de datos de pacientes</h2>
+<div id="nav-page">
+{% block submenu %}<ul>
+<li><a href="/admin/pacientes/">Agregar o modificar contenido</a></li>
+</ul>{% endblock submenu %}
+</div>
+{% block view %}
+<p>Texto de relleno.</p>
+<p>Pellentesque odio metus, auctor quis tempor quis, pharetra a elit. Donec eu vulputate neque. Morbi risus mauris, consequat at porttitor vitae, mollis eget felis. Cras vulputate, nisl sed luctus mattis, nunc diam aliquet massa, sit.</p>
+{% endblock view %}
+{% endblock content %}

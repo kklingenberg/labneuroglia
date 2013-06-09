@@ -1,0 +1,36 @@
+{% extends "viales/index.html" %}
+{% block title %}Líneas celulares | Bitácora{% endblock title %}
+{% block submenu %}<ul>
+<li><a href="/admin/viales/">Agregar o modificar viales</a></li>
+<li><a href="/viales/">Resumen</a></li>
+<li><a href="/viales/ultimomes">Viales del último mes</a></li>
+<li>Bitácora</li>
+</ul>{% endblock submenu %}
+{% block view %}<h3>Bitácora de viales utilizados</h3>
+{% if viales %}
+<p>Se han utilizado {{viales|length}} viales.</p>
+<table border="0px" rules="rows" cellpadding="3px">
+<thead>
+    <tr>
+        <th style="width: 240px;">Fecha de congelación</th>
+        <th style="width: 120px;">Línea</th>
+        <th style="width: 200px;">Stock</th>
+        <th style="width: 120px;">Ubicación</th>
+        <th style="width: 200px;">Observaciones</th>
+    </tr>
+</thead>
+<tbody>
+{% for v in viales %}
+<tr>
+    <td>{% if v.congelado_hoy %}Hoy{% else %}{{ v.fecha }}{% endif %}</td>
+    <td>{{ v.linea.nombre }}</td>
+    <td>{{ v.stock.nombre }}</td>
+    <td>{{ v.ubicacion }}</td>
+    <td{% if v.observaciones %} title="{{ v.observaciones }}"{% endif %}><div style="height: 1.5em; overflow: hidden">{{ v.observaciones }}</div></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% else %}<p>No se han usado viales.</p>
+{% endif %}
+{% endblock view %}

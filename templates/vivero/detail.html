@@ -1,0 +1,46 @@
+{% extends "vivero/index.html" %}
+{% block title %}Vivero | Detalles de ratón{% endblock title %}
+{% block submenu %}<ul>
+<li><a href="/admin/vivero/">Agregar o modificar contenido</a></li>
+<li><a href="/vivero/">Resumen</a></li>
+<li><a href="/vivero/reservas">Reservas</a></li>
+<li><a href="/vivero/bitacora">Bitácora</a></li>
+<li><a href="/vivero/histograma">Histograma</a></li>
+</ul>{% endblock submenu %}
+{% block view %}<h3>Detalles de ratón</h3>
+<table cellpadding="4"><tbody>
+<tr><td><a href="/admin/vivero/raton/{{ raton.pk }}/">Ver en administrador</a></td>{% if raton.reservable %}<td><a href="/vivero/ratones/{{ raton.pk }}/reserva/">Reservar ratón</a></td>{% endif %}</tr>
+</tbody></table>
+<div style="float: left; margin-right: 20px; width: 270px;">
+<table border="0px" cellpadding="3">
+<tbody>
+    <tr><td><strong>Línea genética:</strong></td><td>{{ raton.linea }}</td></tr>
+    <tr><td><strong>Camada:</strong></td><td>{{ raton.camada }}</td></tr>
+    <tr><td><strong>Número:</strong></td><td>{{ raton.numero }}</td></tr>
+    <tr><td><strong>Sexo:</strong></td><td>{{ raton.sexo_verbose }}</td></tr>
+    <tr><td><strong>Genotipo:</strong></td><td>{{ raton.genotipo }}</td></tr>
+    <tr><td><strong>Regenotipo:</strong></td><td>{{ raton.regenotipo }}</td></tr>
+    <tr><td><strong>{% if raton.vive %}Edad:</strong></td><td>{{ raton.edad }}{% else %}F. de nac.</strong></td><td>{{ raton.nacimiento }}{% endif %}</td></tr>
+    <tr><td><strong>Colonia:</strong></td><td>{{ raton.colonia }}</td></tr>
+    <tr><td><strong>Estado:</strong></td><td>{{ raton.estado_verbose }}</td></tr>
+    {% if raton.madre %}<tr><td><strong>Ratona madre:</strong></td><td><a href="/vivero/ratones/{{ raton.madre.pk }}/">{{ raton.madre }}</a></td></tr>{% endif %}
+    {% if raton.padre %}<tr><td><strong>Ratón padre:</strong></td><td><a href="/vivero/ratones/{{ raton.padre.pk }}/">{{ raton.padre }}</a></td></tr>{% endif %}
+</tbody>
+</table>
+</div>
+<div style="float: left; margin-right: 20px; width: 220px;">
+<p style="margin-top: 5px;"><strong>Observaciones:</strong> {% if raton.observaciones %}{{ raton.observaciones }}{% else %}No hay observaciones.{% endif %}</p>
+</div>
+<div style="float: left; width: 310px;">
+<p style="margin-top: 5px;"><strong>Reservas:</strong></p>
+{% if reservas %}<ul>
+{% for reserva in reservas %}    <li title="Reserva modificada por útima vez el {{ reserva.creada }}">Para {{ reserva.fecha }} reservado por {{ reserva.usuario }}. Edad: {{ reserva.edad_reserva }} en la fecha reservada.</li>
+{% endfor %}</ul>
+{% else %}<p>Este ratón no ha sido reservado.</p>{% endif %}
+<p><strong>Revisiones:</strong></p>
+{% if revisiones %}<ul>
+{% for revision in revisiones %}    <li><a href="{{ revision.get_absolute_url }}">{{ revision.fecha }}</a>. {{ revision.puntaje }} puntos.</li>
+{% endfor %}</ul>
+{% else %}<p>Este ratón no ha sido revisado por el veterinario.</p>{% endif %}
+</div>
+{% endblock view %}

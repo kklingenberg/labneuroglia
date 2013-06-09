@@ -1,0 +1,3 @@
+{% for h in header %}"{{ h|addslashes|safe }}",{% endfor %}
+{% for d in dataset %}{% for field in d %}"{{ field|addslashes|safe }}",{% endfor %}
+{% endfor %}
