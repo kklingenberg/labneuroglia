@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from vivero.models import *
-from labs.views import export_things_csv, export_things_pdf
+from views import export_things_csv, export_things_pdf
 import datetime
 import math
 

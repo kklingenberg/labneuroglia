@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from pacientes.models import Paciente, EvaluacionMotora, EvaluacionFuncional, ExamenSignosVitales, ExamenFisico, ExamenNeurologico
 from django.contrib.auth.decorators import login_required
-from labs.views import export_things_csv, export_things_pdf
+from views import export_things_csv, export_things_pdf
 
 @login_required
 def index(request):

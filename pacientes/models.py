@@ -1,6 +1,6 @@
 from django.db import models
 import datetime
-from labs.exportable import CSVExportable, PDFExportable
+from exportable import CSVExportable, PDFExportable
 
 # Modelo central
 class Paciente(models.Model, CSVExportable, PDFExportable):
