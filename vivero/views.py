@@ -154,7 +154,7 @@ def histogram(request):
     conjunto.sort(key=lambda y: y['tiempo'])
     total = len(conjunto)
     if total == 0:
-        return render_to_response('vivero/histogram.html', {'total': 0})
+        return render(request, 'vivero/histogram.html', {'total': 0})
     k = math.ceil(1 + math.log(total, 2))
     if k < 6:
         k = 6.0
