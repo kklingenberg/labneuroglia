@@ -48,10 +48,9 @@ class Descripcion(models.Model):
         verbose_name_plural = u"descripciones de módulos"
 
     def __unicode__(self):
-        return u"Descripción para {0}{1}{2}".format(
+        return u"Descripción para {0}{1}".format(
             dict(self.target_options)[self.target],
-            u" MOSTRADO ACTUALMENTE" if self.enabled else u"",
-            u": {0}...".format(self.body[:10]))
+            u": {0}...".format(self.body[:20]))
 
     def body_to_html(self):
         # split in paragraphs
