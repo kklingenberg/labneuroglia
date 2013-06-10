@@ -7,7 +7,7 @@ from descriptores.models import Descripcion
 
 @login_required
 def index(request):
-    descripcion = Descripcion.objects.filter(target="pacientes")
+    descripcion = Descripcion.objects.filter(target="pacientes", enabled=True)
     descripcion = descripcion[0].body_to_html() \
         if descripcion else u"<p>No hay información</p>"
     return render(request, 'pacientes/index.html', {"description": descripcion})

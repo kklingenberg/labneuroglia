@@ -10,7 +10,7 @@ import cStringIO as StringIO
 import cgi
 
 def home(request):
-    descripcion = Descripcion.objects.filter(target="global")
+    descripcion = Descripcion.objects.filter(target="global", enabled=True)
     descripcion = descripcion[0].body_to_html() \
         if descripcion else u"<p>No hay información</p>"
     return render(request, 'home.html', {"description": descripcion})
