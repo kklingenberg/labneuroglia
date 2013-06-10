@@ -48,9 +48,10 @@ class Descripcion(models.Model):
         verbose_name_plural = u"descripciones de módulos"
 
     def __unicode__(self):
-        return u"Descripción para {0}{1}".format(
+        return u"Descripción para {0}{1}{2}".format(
             dict(self.target_options)[self.target],
-            u"EN USO ACTUALMENTE" if self.enabled else u"")
+            u" MOSTRADO ACTUALMENTE" if self.enabled else u"",
+            u": {0}...".format(self.body[:10]))
 
     def body_to_html(self):
         # split in paragraphs
@@ -67,4 +68,5 @@ class Descripcion(models.Model):
 def set_rest_disabled(sender, instance, **kwargs):
     if instance.enabled:
         Descripcion.objects.filter(
-            ~models.Q(id=instance.id), enabled=True).update(enabled=False)
+            ~models.Q(id=instance.id), enabled=True, target=instance.target).\
+            update(enabled=False)
