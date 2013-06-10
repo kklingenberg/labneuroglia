@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
-from exportable import CSVExportable, PDFExportable
+from laboratorio.exportable import CSVExportable, PDFExportable
 
 # Refrigeradores o contenedores
 class Stock(models.Model):

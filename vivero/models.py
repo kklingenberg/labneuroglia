@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-from exportable import CSVExportable, PDFExportable
+from laboratorio.exportable import CSVExportable, PDFExportable
 
 # Lineas geneticas
 class Linea(models.Model):

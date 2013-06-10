@@ -16,9 +16,11 @@ framework.
 import os
 import sys
 
-path_to_app = '/home/labneuroglia/webapps/labs/laboratorio/'
+path_to_app = '/home/labneuroglia/webapps/labs/laboratorio'
 if path_to_app not in sys.path:
     sys.path.append(path_to_app)
+
+import laboratorio.settings
 
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
 # if running multiple sites in the same mod_wsgi process. To fix this, use

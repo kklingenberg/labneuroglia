@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 from viales.models import Stock, Linea, Vial
 from django.contrib.auth.decorators import login_required
 import datetime
-from views import export_things_csv, export_things_pdf
+from laboratorio.views import export_things_csv, export_things_pdf
 
 @login_required
 def index(request):
