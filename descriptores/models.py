@@ -4,8 +4,21 @@ import re
 from django.db import models
 
 
-sub_bold = re.compile("\*(.*?)\*").sub
-sub_italic = re.compile("_(.*?)_").sub
+sub_bold = lambda text: re.sub(
+    "\*(.*?)\*",
+    lambda mobj: u"<strong>{0}</strong>".format(mobj.group(1)),
+    text)
+
+sub_italic = lambda text: re.sub(
+    "_(.*?)_",
+    lambda mobj: u"<em>{0}</em>".format(mobj.group(1)),
+    text)
+
+sub_titles = lambda text: re.sub(
+    "=(.*?)=",
+    lambda mobj: u'<span style="font-size: 1.5em;">{0}</span>'.\
+        format(mobj.group(1)),
+    text)
 
 
 class Descripcion(models.Model):
@@ -26,7 +39,7 @@ class Descripcion(models.Model):
         blank=True,
         help_text=u"Escriba frases entre asteriscos (*) para que se muestren "\
             u"en negrita. Use guiones bajos (_) para que se muestren "\
-            u"en cursiva.")
+            u"en cursiva. Use el signo igual (=) para títulos.")
 
     class Meta:
         verbose_name = u"descripción de módulo"
@@ -38,14 +51,10 @@ class Descripcion(models.Model):
     def body_to_html(self):
         # split in paragraphs
         pars = self.body.split("\n")
+        # sub titles
+        pars = map(sub_titles, pars)
         # sub bold
-        pars = map(
-            lambda p: sub_bold(
-                lambda mobj: u"<strong>{0}</strong>".format(mobj.group(1)), p),
-            pars)
+        pars = map(sub_bold, pars)
         # sub italic
-        pars = map(
-            lambda p: sub_italic(
-                lambda mobj: u"<em>{0}</em>".format(mobj.group(1)), p),
-            pars)
+        pars = map(sub_italic, pars)
         return "".join(map(lambda p: u"<p>{0}</p>\n".format(p.strip()), pars))
