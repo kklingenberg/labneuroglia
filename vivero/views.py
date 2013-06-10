@@ -1,7 +1,6 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from vivero.models import *
@@ -13,7 +12,7 @@ import math
 def index(request):    
     ratones = Raton.objects.exclude(estado__iexact='S').exclude(estado__iexact='M').exclude(estado__iexact='E').order_by('linea', 'camada', 'numero')
     total = ratones.count()
-    return render_to_response('vivero/index.html', {'ratones': ratones, 'total': total})
+    return render(request, 'vivero/index.html', {'ratones': ratones, 'total': total})
 
 # Detalle de raton
 @login_required
@@ -21,7 +20,7 @@ def detail(request, raton_id):
     raton = get_object_or_404(Raton, pk=raton_id)
     reservas = raton.reserva_set.order_by('creada')
     revisiones = raton.revision_set.order_by('fecha')
-    return render_to_response('vivero/detail.html', {'raton': raton, 'reservas': reservas, 'revisiones': revisiones})
+    return render(request, 'vivero/detail.html', {'raton': raton, 'reservas': reservas, 'revisiones': revisiones})
 
 # Exportar ratones en formato csv
 @login_required
@@ -68,17 +67,17 @@ def reserve(request, raton_id):
             parts_t = request.POST['fechat'].rsplit('/')
             fecha_t = datetime.date(int(parts_t[2]), int(parts_t[1]), int(parts_t[0]))
     except KeyError:
-        return render_to_response('vivero/reserve.html', {
+        return render(request, 'vivero/reserve.html', {
             'raton': raton,
             'error_message': u'Error al reservar rat\u00F3n. Se cancel\u00F3 la reserva.',
             'prev': prev,
-        }, context_instance=RequestContext(request))
+        })
     except (IndexError, ValueError):
-        return render_to_response('vivero/reserve.html', {
+        return render(request, 'vivero/reserve.html', {
             'raton': raton,
             'error_message': u"Fecha inv\u00E1lida.",
             'prev': prev,
-        }, context_instance=RequestContext(request))
+        })
     else:
         reserva = Reserva()
         reserva.raton = raton
@@ -103,28 +102,27 @@ def reservationform(request, raton_id):
         prev = request.GET['prev']
     except KeyError:
         pass
-    return render_to_response('vivero/reserve.html', {'raton': raton, 'prev': prev},
-        context_instance=RequestContext(request))
+    return render(request, 'vivero/reserve.html', {'raton': raton, 'prev': prev})
 
 # Revision de un raton
 @login_required
 def revision(request, revision_id):
     revision = get_object_or_404(Revision, pk=revision_id)
-    return render_to_response('vivero/revision.html', {'revision': revision})
+    return render(request, 'vivero/revision.html', {'revision': revision})
 
 # Reservas efectuadas desde un mes atras
 @login_required
 def reservations(request):
     hoy = datetime.date.today()
     reservas = map(lambda f: (f['fecha'], Reserva.objects.filter(fecha=f['fecha'])), Reserva.objects.filter(fecha__gt=hoy-datetime.timedelta(30)).order_by('fecha').values('fecha').distinct())
-    return render_to_response('vivero/reservations.html', {'reservas': reservas})
+    return render(request, 'vivero/reservations.html', {'reservas': reservas})
 
 # Bitacora de ratones sacrificados y muertos
 @login_required
 def log(request):
     ratones = Raton.objects.filter(Q(estado__iexact='S') | Q(estado__iexact='M') | Q(estado__iexact='E')).order_by('-nacimiento')
     total = ratones.count()
-    return render_to_response('vivero/log.html', {'ratones': ratones, 'total': total})
+    return render(request, 'vivero/log.html', {'ratones': ratones, 'total': total})
 
 # Histograma de muertes
 @login_required
@@ -180,5 +178,4 @@ def histogram(request):
     response['series_linea'] = doseries('linea', lineas, clases, conjunto)
     response['amplitud'] = str(rango*1.0/k)
     response['total'] = total
-    return render_to_response('vivero/histogram.html', response)
-
+    return render(request, 'vivero/histogram.html', response)

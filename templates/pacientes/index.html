@@ -18,7 +18,8 @@
 </ul>{% endblock submenu %}
 </div>
 {% block view %}
-<p>Texto de relleno.</p>
-<p>Pellentesque odio metus, auctor quis tempor quis, pharetra a elit. Donec eu vulputate neque. Morbi risus mauris, consequat at porttitor vitae, mollis eget felis. Cras vulputate, nisl sed luctus mattis, nunc diam aliquet massa, sit.</p>
+
+{{ description|safe }}
+
 {% endblock view %}
 {% endblock content %}

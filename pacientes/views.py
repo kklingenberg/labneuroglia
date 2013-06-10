@@ -1,11 +1,16 @@
-from django.shortcuts import render_to_response
+# -*- coding: utf-8 -*-
+from django.shortcuts import render
 from pacientes.models import Paciente, EvaluacionMotora, EvaluacionFuncional, ExamenSignosVitales, ExamenFisico, ExamenNeurologico
 from django.contrib.auth.decorators import login_required
 from laboratorio.views import export_things_csv, export_things_pdf
+from descriptores.models import Descripcion
 
 @login_required
 def index(request):
-    return render_to_response('pacientes/index.html')
+    descripcion = Descripcion.objects.filter(target="pacientes")
+    descripcion = descripcion[0].body_to_html() \
+        if descripcion else u"<p>No hay información</p>"
+    return render(request, 'pacientes/index.html', {"description": descripcion})
 
 # Exportar cosas en formato csv
 @login_required

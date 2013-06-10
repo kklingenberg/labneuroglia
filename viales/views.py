@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from viales.models import Stock, Linea, Vial
 from django.contrib.auth.decorators import login_required
 import datetime
@@ -10,18 +10,18 @@ def index(request):
     lineas = Linea.objects.all()
     viales = dict(map(lambda s: (s.nombre, dict(map(lambda l: (l.nombre, l.vial_set.filter(stock=s, vigente__iexact='S').count()), lineas))), stocks))
     total = sum(map(lambda c: sum(c.values()) , viales.values()))
-    return render_to_response('viales/index.html', {'viales': viales, 'total': total})
+    return render(request, 'viales/index.html', {'viales': viales, 'total': total})
 
 @login_required
 def lastmonth(request):
     today = datetime.date.today()
     viales = Vial.objects.filter(fecha__gte=today-datetime.timedelta(30)).order_by('-fecha')
-    return render_to_response('viales/lastmonth.html', {'viales': viales})
+    return render(request, 'viales/lastmonth.html', {'viales': viales})
 
 @login_required
 def log(request):
     viales = Vial.objects.filter(vigente__iexact='N').order_by('-fecha')
-    return render_to_response('viales/log.html', {'viales': viales})
+    return render(request, 'viales/log.html', {'viales': viales})
 
 # Exportar viales en formato csv
 @login_required

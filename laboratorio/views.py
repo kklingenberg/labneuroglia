@@ -1,14 +1,19 @@
-from django.shortcuts import render_to_response
+# -*- coding: utf-8 -*-
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import loader, Context
 from django.contrib.auth.decorators import login_required
+from descriptores.models import Descripcion
 import xhtml2pdf.pisa as pisa
 import cStringIO as StringIO
 import cgi
 
 def home(request):
-    return render_to_response('home.html')
+    descripcion = Descripcion.objects.filter(target="global")
+    descripcion = descripcion[0].body_to_html() \
+        if descripcion else u"<p>No hay información</p>"
+    return render(request, 'home.html', {"description": descripcion})
 
 @login_required
 def backup(request):

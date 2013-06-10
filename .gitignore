@@ -9,3 +9,6 @@
 
 # Settings file
 laboratorio/settings.py
+
+# Database files
+*.db
