@@ -1,4 +1,5 @@
 from viales.models import Stock, Linea, Vial
+from laboratorio.base_admin import BaseAdmin
 from django.contrib import admin
 import datetime
 from django.http import HttpResponseRedirect
@@ -6,7 +7,7 @@ from django.http import HttpResponseRedirect
 admin.site.register(Stock)
 admin.site.register(Linea)
 
-class VialAdmin(admin.ModelAdmin):
+class VialAdmin(BaseAdmin):
     exclude = ('vigente', 'usuario', 'usuario_descongela',)
     fieldsets = [
         (u'', {'fields': ['linea', 'stock', 'ubicacion', 'fecha', 'observaciones']}),
@@ -41,4 +42,3 @@ class VialAdmin(admin.ModelAdmin):
     export_pdf.short_description = "Exportar seleccionados en formato PDF"
 
 admin.site.register(Vial, VialAdmin)
-

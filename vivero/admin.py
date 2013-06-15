@@ -1,4 +1,5 @@
 from vivero.models import Linea, Genotipo, Raton, Reserva, Revision, ImagenRaton, VideoRaton, Historico
+from laboratorio.base_admin import BaseAdmin
 from django.contrib import admin
 from django.db.models import Q, Count
 from django.http import HttpResponseRedirect
@@ -26,7 +27,7 @@ def save_history(mice, state, user, event):
         h.save()
 
 
-class RatonAdmin(admin.ModelAdmin):
+class RatonAdmin(BaseAdmin):
     fieldsets = [
         (u'Identificaci\u00F3n',  {'fields': ['linea', 'camada', 'numero']}),
         (u'Caracter\u00EDsticas', {'fields': ['sexo', 'genotipo', 'regenotipo', 'nacimiento', 'colonia', 'estado', 'observaciones']}),
@@ -112,7 +113,7 @@ class RatonAdmin(admin.ModelAdmin):
 
 admin.site.register(Raton, RatonAdmin)
 
-class ReservaAdmin(admin.ModelAdmin):
+class ReservaAdmin(BaseAdmin):
     exclude = ('usuario',)
     list_display = ('raton', 'usuario', 'fecha', 'edad_reserva')
     list_filter = ['fecha']
@@ -154,7 +155,7 @@ class ReservaAdmin(admin.ModelAdmin):
 
 admin.site.register(Reserva, ReservaAdmin)
 
-class RevisionAdmin(admin.ModelAdmin):
+class RevisionAdmin(BaseAdmin):
     list_display = ('raton', 'fecha', 'puntaje')
     list_filter = ['fecha']
     date_hierarchy = 'fecha'

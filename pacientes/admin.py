@@ -1,4 +1,5 @@
 from pacientes.models import Paciente, Familiar, EvaluacionMotora, EvaluacionFuncional, Neuroimagen, ExamenSignosVitales, ExamenFisico, ExamenNeurologico
+from laboratorio.base_admin import BaseAdmin
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 
@@ -10,7 +11,7 @@ class NeuroimagenInline(admin.StackedInline):
     model = Neuroimagen
     extra = 0
 
-class PacienteAdmin(admin.ModelAdmin):
+class PacienteAdmin(BaseAdmin):
     fieldsets = [
         (u'Demogr\u00E1ficos', {'fields': ['sexo', 'nacimiento', 'raza', 'raza_otro']}),
         (u'Gen\u00E9ticos', {'fields': ['test_genetico', 'tripletes']}),
@@ -49,7 +50,7 @@ class PacienteAdmin(admin.ModelAdmin):
 admin.site.register(Paciente, PacienteAdmin)
 #admin.site.register(Familiar)
 
-class EvaluacionMotoraAdmin(admin.ModelAdmin):
+class EvaluacionMotoraAdmin(BaseAdmin):
     list_display = ('__unicode__', 'fecha', 'efectuadas', 'total_puntaje')
     list_filter = ['fecha']
     search_fields = ['paciente__id']
@@ -69,7 +70,7 @@ class EvaluacionMotoraAdmin(admin.ModelAdmin):
 
 admin.site.register(EvaluacionMotora, EvaluacionMotoraAdmin)
 
-class EvaluacionFuncionalAdmin(admin.ModelAdmin):
+class EvaluacionFuncionalAdmin(BaseAdmin):
     fieldsets = [
         (u'Referecias', {'fields': ['paciente', 'fecha']}),
         (u'Cuestionario', {'fields': ['q{0}'.format(i) for i in range(1, 26)]}),
@@ -96,7 +97,7 @@ class EvaluacionFuncionalAdmin(admin.ModelAdmin):
 admin.site.register(EvaluacionFuncional, EvaluacionFuncionalAdmin)
 #admin.site.register(Neuroimagen)
 
-class ExamenSignosVitalesAdmin(admin.ModelAdmin):
+class ExamenSignosVitalesAdmin(BaseAdmin):
     date_hierarchy = 'fecha'
     list_filter = ['fecha']
     search_fields = ['paciente__id']
@@ -110,7 +111,7 @@ class ExamenSignosVitalesAdmin(admin.ModelAdmin):
 
 admin.site.register(ExamenSignosVitales, ExamenSignosVitalesAdmin)
 
-class ExamenFisicoAdmin(admin.ModelAdmin):
+class ExamenFisicoAdmin(BaseAdmin):
     date_hierarchy = 'fecha'
     list_filter = ['fecha']
     search_fields = ['paciente__id']
@@ -134,7 +135,7 @@ class ExamenFisicoAdmin(admin.ModelAdmin):
 
 admin.site.register(ExamenFisico, ExamenFisicoAdmin)
 
-class ExamenNeurologicoAdmin(admin.ModelAdmin):
+class ExamenNeurologicoAdmin(BaseAdmin):
     date_hierarchy = 'fecha'
     list_filter = ['fecha']
     search_fields = ['paciente__id']
