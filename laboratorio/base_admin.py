@@ -50,8 +50,3 @@ class BaseAdmin(admin.ModelAdmin):
             request.readonly = True
         return super(BaseAdmin, self).change_view(
             request, object_id, extra_context=extra_context)
-
-
-class BaseAdminSite(admin.AdminSite):
-    def register(self, m, admin_class=None, **options):
-        super(BaseAdminSite, self).register(m, BaseAdmin, **options)

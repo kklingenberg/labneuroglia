@@ -1,9 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
-from laboratorio.base_admin import BaseAdminSite
 from django.contrib import admin
-admin.site = BaseAdminSite()
 admin.autodiscover()
 
 urlpatterns = patterns('',

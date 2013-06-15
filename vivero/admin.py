@@ -6,8 +6,8 @@ from django.http import HttpResponseRedirect
 import datetime
 import re
 
-admin.site.register(Linea)
-admin.site.register(Genotipo)
+admin.site.register(Linea, BaseAdmin)
+admin.site.register(Genotipo, BaseAdmin)
 
 class ImagenInline(admin.StackedInline):
     model = ImagenRaton

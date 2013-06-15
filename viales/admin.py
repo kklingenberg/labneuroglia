@@ -4,8 +4,8 @@ from django.contrib import admin
 import datetime
 from django.http import HttpResponseRedirect
 
-admin.site.register(Stock)
-admin.site.register(Linea)
+admin.site.register(Stock, BaseAdmin)
+admin.site.register(Linea, BaseAdmin)
 
 class VialAdmin(BaseAdmin):
     exclude = ('vigente', 'usuario', 'usuario_descongela',)

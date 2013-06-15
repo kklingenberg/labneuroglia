@@ -48,7 +48,7 @@ class PacienteAdmin(BaseAdmin):
     export_pdf.short_description = "Exportar seleccionados en formato PDF"
 
 admin.site.register(Paciente, PacienteAdmin)
-#admin.site.register(Familiar)
+#admin.site.register(Familiar, BaseAdmin)
 
 class EvaluacionMotoraAdmin(BaseAdmin):
     list_display = ('__unicode__', 'fecha', 'efectuadas', 'total_puntaje')
@@ -95,7 +95,7 @@ class EvaluacionFuncionalAdmin(BaseAdmin):
     export_pdf.short_description = "Exportar seleccionados en formato PDF"
 
 admin.site.register(EvaluacionFuncional, EvaluacionFuncionalAdmin)
-#admin.site.register(Neuroimagen)
+#admin.site.register(Neuroimagen, BaseAdmin)
 
 class ExamenSignosVitalesAdmin(BaseAdmin):
     date_hierarchy = 'fecha'
