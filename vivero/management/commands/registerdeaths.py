@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from labs.vivero.models import Raton, Reserva, Revision, Historico
+from vivero.models import Raton, Reserva, Revision, Historico
 import datetime
 
 class Command(BaseCommand):
