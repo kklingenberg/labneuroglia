@@ -35,7 +35,7 @@ class Raton(models.Model, CSVExportable, PDFExportable):
     )
     sexo = models.CharField(max_length=1, default='F', choices=sexos)
     genotipo = models.ForeignKey(Genotipo, related_name='raton_genotipo_set')
-    regenotipo = models.ForeignKey(Genotipo, related_name='raton_regenotipo_set')
+    regenotipo = models.ForeignKey(Genotipo, related_name='raton_regenotipo_set', blank=True, null=True)
     nacimiento = models.DateField(verbose_name='fecha de nacimiento')
     colonia = models.CharField(max_length=100)
     estados = (
