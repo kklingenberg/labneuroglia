@@ -17,7 +17,8 @@ class BaseAdmin(admin.ModelAdmin):
 
     def get_model_perms(self, request):
         perms = super(BaseAdmin, self).get_model_perms(request)
-        perms['change'] = perms['view'] = self.has_view_permission(request)
+        perms['view'] = self.has_view_permission(request)
+        perms['change'] = perms['view'] or perms['change']
         return perms
 
     def has_change_permission(self, request, obj=None):
