@@ -20,6 +20,8 @@
     <tr><td><strong>Sexo:</strong></td><td>{{ raton.sexo_verbose }}</td></tr>
     <tr><td><strong>Genotipo:</strong></td><td>{{ raton.genotipo }}</td></tr>
     <tr><td><strong>Regenotipo:</strong></td><td>{{ raton.regenotipo }}</td></tr>
+    <tr><td><strong>Marca:</strong></td><td>{{ raton.marca|default:'' }}</td></tr>
+    <tr><td><strong>Ubicación:</strong></td><td>{{ raton.ubicacion|default:'' }}</td></tr>
     <tr><td><strong>{% if raton.vive %}Edad:</strong></td><td>{{ raton.edad }}{% else %}F. de nac.</strong></td><td>{{ raton.nacimiento }}{% endif %}</td></tr>
     <tr><td><strong>Colonia:</strong></td><td>{{ raton.colonia }}</td></tr>
     <tr><td><strong>Estado:</strong></td><td>{{ raton.estado_verbose }}</td></tr>

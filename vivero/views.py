@@ -161,7 +161,7 @@ def histogram(request):
     edadmax = conjunto[-1]['tiempo']
     edadmin = conjunto[0]['tiempo']
     rango = edadmax - edadmin
-    clases = [edadmin + i*rango*1.0/k for i in range(k)]
+    clases = [edadmin + i*rango*1.0/k for i in range(int(k))]
     def doseries(selector, labels, classes, rawset):
         series = []
         for label in labels:

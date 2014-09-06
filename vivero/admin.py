@@ -34,7 +34,7 @@ class RatonAdmin(BaseAdmin):
         (u'Padres', {'fields': ['padre', 'madre'], 'classes': ['collapse']}),
         (u'Muerte', {'fields': ['muerte'], 'classes': ['collapse']}),
     ]
-    list_display = ('__unicode__', 'sexo', 'genotipo', 'estado', 'nacimiento', 'edad', 'reservado_verbose')
+    list_display = ('__unicode__', 'sexo', 'genotipo', 'marca', 'ubicacion', 'estado', 'nacimiento', 'edad')
     list_filter = ['sexo', 'estado', 'nacimiento', 'linea', 'genotipo']
     inlines = [ImagenInline, VideoInline]
     search_fields = ['numero']
