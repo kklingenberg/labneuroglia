@@ -29,7 +29,7 @@ def save_history(mice, state, user, event):
 
 class RatonAdmin(BaseAdmin):
     fieldsets = [
-        (u'Identificaci\u00F3n',  {'fields': ['linea', 'camada', 'numero']}),
+        (u'Identificaci\u00F3n',  {'fields': ['linea', 'camada', 'numero', 'marca', 'ubicacion']}),
         (u'Caracter\u00EDsticas', {'fields': ['sexo', 'genotipo', 'regenotipo', 'nacimiento', 'colonia', 'estado', 'observaciones']}),
         (u'Padres', {'fields': ['padre', 'madre'], 'classes': ['collapse']}),
         (u'Muerte', {'fields': ['muerte'], 'classes': ['collapse']}),
